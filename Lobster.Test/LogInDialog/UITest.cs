@@ -5,14 +5,14 @@ using Lobster.PageObjectModel.Pages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace Lobster.Test
+namespace Lobster.Test.LogInDialog
 {
 	[TestClass]
-	public class LogInDialogUiTest
+	public class UiTest
 	{
 		private static HomePage _homePage;
 
-		private static LogInDialog _dialog;
+		private static PageObjectModel.Dialogs.LogInDialog _dialog;
 		
 		public TestContext TestContext { get; set; }
 

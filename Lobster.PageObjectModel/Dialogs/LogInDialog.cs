@@ -80,5 +80,11 @@ namespace Lobster.PageObjectModel.Dialogs
 			Browser.Wait();
 			RememberMeCheckBox.Click();
 		}
+
+		public void ViaFacebook()
+		{
+			Browser.Wait();
+			ViaFacebookButtton.Click();
+		}
 	}
 }

@@ -55,9 +55,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="LogInDialogUITest.cs" />
+    <Compile Include="LogInDialog\UITest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LogInDialogFunctionalTest.cs" />
+    <Compile Include="LogInDialog\FunctionalTest.cs" />
+    <Compile Include="Users.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lobster.PageObjectModel\Lobster.PageObjectModel.csproj">

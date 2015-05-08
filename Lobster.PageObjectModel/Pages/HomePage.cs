@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lobster.PageObjectModel.Dialogs;
+﻿using Lobster.PageObjectModel.Dialogs;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 
@@ -13,26 +8,29 @@ namespace Lobster.PageObjectModel.Pages
 	{
 		#region Buttons
 
-		[FindsBy(How = How.XPath, Using = "//*[@id='m-navigation']/ul/li[4]/a")]
-		public IWebElement SingInButton { get; set; }
-
-		[FindsBy(How = How.XPath, Using = "//*[@id='m-navigation']/ul/li[3]/a")]
-		public IWebElement SignUpButton { get; set; }
-
-		[FindsBy(How = How.XPath, Using = "//*[@id='m-navigation']/ul/li[2]/a")]
-		public IWebElement BlogButton { get; set; }
-
-		[FindsBy(How = How.XPath, Using = "//*[@id='m-navigation']/ul/li[1]/a")]
+		[FindsBy(How = How.XPath, Using = "//*[@class='m-navigation js-mobile-navigation']/ul/li[1]/a")]
 		public IWebElement AboutButton { get; set; }
 
-		[FindsBy(How = How.XPath, Using = "//*[@id='m-navigation']/ul/li[1]/a")]
+		[FindsBy(How = How.XPath, Using = "//*[@class='m-navigation js-mobile-navigation']/ul/li[2]/a")]
+		public IWebElement BlogButton { get; set; }
+
+		[FindsBy(How = How.XPath, Using = "//*[@class='m-navigation js-mobile-navigation']/ul/li[3]/a")]
+		public IWebElement SignUpButton { get; set; }
+
+		[FindsBy(How = How.XPath, Using = "//*[@class='m-navigation js-mobile-navigation']/ul/li[4]/a")]
+		public IWebElement SignInButton { get; set; }
+
+		[FindsBy(How = How.XPath, Using = "//*[@class='m-navigation m-navigation--banner']/ul/li[1]/a")]
 		public IWebElement MarketplaceButton { get; set; }
+
+		[FindsBy(How = How.XPath, Using = "//*[@class='is-signed-in']/a")]
+		public IWebElement MyPforfile { get; set; }
 
 		#endregion
 
 		public LogInDialog OpenLogInDialog()
 		{
-			SingInButton.Click();
+			SignInButton.Click();
 			
 			return Dialogs.Dialogs.LogIn;
 		}

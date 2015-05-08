@@ -13,5 +13,15 @@ namespace Lobster.PageObjectModel.Pages
 				return page;
 			}
 		}
+
+		public static FacebookPage Facebook
+		{
+			get
+			{
+				var page = new FacebookPage();
+				PageFactory.InitElements(Browser.Driver, page);
+				return page;
+			}
+		}
 	}
 }
