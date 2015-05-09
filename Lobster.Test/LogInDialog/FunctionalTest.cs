@@ -27,20 +27,21 @@ namespace Lobster.Test.LogInDialog
 		}
 
 		[TestMethod]
-		public void EmptyUserPasswordTest()
+		public void UserEmptyPasswordTest()
 		{
 			// Act
 			Login(Users.EmptyPassword);
 
 			// Assert
 			Assert.IsFalse(_logInDialog.ErrorMessage.Displayed);
+			Assert.AreEqual("Invalid password", _logInDialog.ErrorMessage.Text);
 		}
 
 		[TestMethod]
-		public void NotEmailTest()
+		public void UserNotEmailTest()
 		{
 			// Act
-			Login(Users.InvalidEmail);
+			Login(Users.NotEmail);
 
 			// Assert
 			Wait(_logInDialog.ErrorMessage);
@@ -49,7 +50,31 @@ namespace Lobster.Test.LogInDialog
 		}
 
 		[TestMethod]
-		public void WrongPasswordTest()
+		public void UserNoOneTest()
+		{
+			// Act
+			Login(Users.NoOne);
+
+			// Assert
+			Wait(_logInDialog.ErrorMessage);
+			Assert.IsTrue(_logInDialog.ErrorMessage.Displayed);
+			Assert.AreEqual("Invalid email", _logInDialog.ErrorMessage.Text);
+		}
+
+		[TestMethod]
+		public void UserEmptyEmailTest()
+		{
+			// Act
+			Login(Users.EmptyEmail);
+
+			// Assert
+			Wait(_logInDialog.ErrorMessage);
+			Assert.IsTrue(_logInDialog.ErrorMessage.Displayed);
+			Assert.AreEqual("Invalid email", _logInDialog.ErrorMessage.Text);
+		}
+
+		[TestMethod]
+		public void UserWrongPasswordTest()
 		{
 			// Act
 			Login(Users.WrongPassword);
@@ -61,7 +86,7 @@ namespace Lobster.Test.LogInDialog
 		}
 
 		[TestMethod]
-		public void NotActivatedUserTest()
+		public void UserRegisteredTest()
 		{
 			// Act
 			Login(Users.Registered);
@@ -73,7 +98,7 @@ namespace Lobster.Test.LogInDialog
 		}
 
 		[TestMethod]
-		public void ActivatedUserTest()
+		public void UserActivatedTest()
 		{
 			// Act
 			Login(Users.Activated);
@@ -81,6 +106,42 @@ namespace Lobster.Test.LogInDialog
 			// Assert
 			Wait(_logInDialog);
 			Assert.AreEqual("My profile",_landingPage.MyPforfile.Text);
+		}
+
+		[TestMethod]
+		public void UserNotRegisteredTest()
+		{
+			// Act
+			Login(Users.NotRegistered);
+
+			// Assert
+			Wait(_logInDialog.ErrorMessage);
+			Assert.IsTrue(_logInDialog.ErrorMessage.Displayed);
+			Assert.AreEqual("You are not registered", _logInDialog.ErrorMessage.Text);
+		}
+
+		[TestMethod]
+		public void UserFacebookActivatedFullTest()
+		{
+			// Act
+			FacebookLogin(Users.FacebookFull);
+
+			// Assert
+			//Assert.IsTrue(Browser.HasNewWindow());
+			Wait(_logInDialog);
+			Assert.AreEqual("Sergey Ok", _landingPage.MyPforfile.Text);
+		}
+
+		[TestMethod]
+		public void UserFacebookActivatedNoEmailTest()
+		{
+			// Act
+			FacebookLogin(Users.FacebookNoEmail);
+
+			// Assert
+			//Assert.IsTrue(Browser.HasNewWindow());
+			Wait(_logInDialog);
+			Assert.AreEqual("Sergey Ok", _landingPage.MyPforfile.Text);
 		}
 
 		[TestMethod]
@@ -109,22 +170,6 @@ namespace Lobster.Test.LogInDialog
 			Assert.IsFalse(_logInDialog.Root.Displayed);
 			Assert.IsTrue(forgot.Root.Displayed);
 			Assert.AreEqual("Forgot? Do not panic", forgot.Name.Text);
-		}
-
-		[TestMethod]
-		public void ClickFacebookTest()
-		{
-			// Act
-			_logInDialog.ViaFacebook();
-			var facebook = Pages.Facebook;
-			Browser.GetNewWindow();
-			facebook.Login(Users.FacebookNoEmail.Email, Users.FacebookNoEmail.Password);
-			Browser.GetCurrentWindow();
-
-			// Assert
-			//Assert.IsTrue(Browser.HasNewWindow());
-			Wait(_logInDialog);
-			Assert.AreEqual("Sergey Ok", _landingPage.MyPforfile.Text);
 		}
 
 		[TestMethod]
@@ -180,9 +225,18 @@ namespace Lobster.Test.LogInDialog
 			}
 		}
 
-		private void Login(User user)
+		private static void Login(User user)
 		{
 			_logInDialog.Login(user.Email, user.Password);
+		}
+
+		private static void FacebookLogin(User user)
+		{
+			_logInDialog.ViaFacebook();
+			var facebook = Pages.Facebook;
+			Browser.GetNewWindow();
+			facebook.Login(user.Email, user.Password);
+			Browser.GetCurrentWindow();
 		}
 	}
 }

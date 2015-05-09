@@ -1,7 +1,8 @@
 ﻿
 
 // ReSharper disable UnusedAutoPropertyAccessor.Local
-
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Lobster.Test
 {
@@ -23,7 +24,7 @@ namespace Lobster.Test
 
 		public static User NotRegistered { get; private set; }
 
-		public static User InvalidEmail { get; private set; }
+		public static User NotEmail { get; private set; }
 
 		public static User EmptyEmail { get; private set; }
 
@@ -33,6 +34,8 @@ namespace Lobster.Test
 
 		public static User NoOne { get; private set; }
 
+		private static List<User> _users; 
+
 		static Users()
 		{
 			Initialize();
@@ -40,9 +43,12 @@ namespace Lobster.Test
 
 		private static void Initialize()
 		{
+			_users = new List<User>();
+
 			foreach (var property in typeof(Users).GetProperties())
 			{
 				property.SetValue(property, CreateUser(property.Name));
+				_users.Add((User)property.GetValue(property));
 			}
 		}
 
@@ -51,13 +57,13 @@ namespace Lobster.Test
 			switch (accountState)
 			{
 				case "EmptyPassword":
-					return CreateUserSimple(accountState, string.Empty);
+					return CreateUserSimple(Activated.Email, string.Empty);
 				case "NoOne":
 					return CreateUserSimple(string.Empty, string.Empty);
-				case "InvalidEmail":
+				case "NotEmail":
 					return CreateUserSimple(BaseMailPrefix, Password);
 				case "WrongPassword":
-					return CreateUserSimple(accountState, "wrong");
+					return CreateUserSimple(Activated.Email, "wrong");
 				case "EmptyEmail":
 					return CreateUserSimple(string.Empty, Password);
 			}
@@ -77,6 +83,14 @@ namespace Lobster.Test
 		private static string ConstructEmail(string accountState)
 		{
 			return BaseMailPrefix + "+" + accountState + "@" + EmailProvider;
+		}
+
+		public static void PrintUsers()
+		{
+			foreach (var user in _users)
+			{
+				Debug.WriteLine(user.Email, user.Password);
+			}
 		}
 	}
 }
