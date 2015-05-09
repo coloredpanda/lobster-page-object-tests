@@ -27,31 +27,20 @@ namespace Lobster.Test.LogInDialog
 		}
 
 		[TestMethod]
-		public void LogInDialogFunctionalCloseTest()
+		public void EmptyUserPasswordTest()
 		{
 			// Act
-			_logInDialog.Close();
-
-			// Assert
-			Wait(_logInDialog);
-			Assert.IsFalse(_logInDialog.Root.Displayed);
-		}
-
-		[TestMethod]
-		public void LogInDialogFunctionalEmptyUserPasswordTest()
-		{
-			// Act
-			_logInDialog.Login(String.Empty, String.Empty);
+			Login(Users.EmptyPassword);
 
 			// Assert
 			Assert.IsFalse(_logInDialog.ErrorMessage.Displayed);
 		}
 
 		[TestMethod]
-		public void LogInDialogFunctionalNotEmailTest()
+		public void NotEmailTest()
 		{
 			// Act
-			_logInDialog.Login("test", String.Empty);
+			Login(Users.InvalidEmail);
 
 			// Assert
 			Wait(_logInDialog.ErrorMessage);
@@ -60,22 +49,22 @@ namespace Lobster.Test.LogInDialog
 		}
 
 		[TestMethod]
-		public void LogInDialogFunctionalWrongPasswordTest()
+		public void WrongPasswordTest()
 		{
 			// Act
-			_logInDialog.Login("test", String.Empty);
+			Login(Users.WrongPassword);
 
 			// Assert
 			Wait(_logInDialog.ErrorMessage);
 			Assert.IsTrue(_logInDialog.ErrorMessage.Displayed);
-			Assert.AreEqual("Invalid email", _logInDialog.ErrorMessage.Text);
+			Assert.AreEqual("Invalid password", _logInDialog.ErrorMessage.Text);
 		}
 
 		[TestMethod]
-		public void LogInDialogFunctionalNotActivatedUserTest()
+		public void NotActivatedUserTest()
 		{
 			// Act
-			_logInDialog.Login(Users.Registered["email"], Users.Registered["password"]);
+			Login(Users.Registered);
 
 			// Assert
 			Wait(_logInDialog.ErrorMessage);
@@ -84,10 +73,10 @@ namespace Lobster.Test.LogInDialog
 		}
 
 		[TestMethod]
-		public void LogInDialogFunctionalActivatedUserTest()
+		public void ActivatedUserTest()
 		{
 			// Act
-			_logInDialog.Login(Users.Activated["email"], Users.Activated["password"]);
+			Login(Users.Activated);
 
 			// Assert
 			Wait(_logInDialog);
@@ -95,7 +84,7 @@ namespace Lobster.Test.LogInDialog
 		}
 
 		[TestMethod]
-		public void LogInDialogFunctionalClickSignUpTest()
+		public void ClickSignUpTest()
 		{
 			// Act
 			_logInDialog.Signup();
@@ -109,7 +98,7 @@ namespace Lobster.Test.LogInDialog
 		}
 
 		[TestMethod]
-		public void LogInDialogFunctionalClickForgotPasswordTest()
+		public void ClickForgotPasswordTest()
 		{
 			// Act
 			_logInDialog.ForgotPassword();
@@ -123,19 +112,30 @@ namespace Lobster.Test.LogInDialog
 		}
 
 		[TestMethod]
-		public void LogInDialogFunctionalClickFacebookTest()
+		public void ClickFacebookTest()
 		{
 			// Act
 			_logInDialog.ViaFacebook();
 			var facebook = Pages.Facebook;
 			Browser.GetNewWindow();
-			facebook.Login(Users.Facebook["email"], Users.Facebook["password"]);
+			facebook.Login(Users.FacebookNoEmail.Email, Users.FacebookNoEmail.Password);
 			Browser.GetCurrentWindow();
 
 			// Assert
 			//Assert.IsTrue(Browser.HasNewWindow());
 			Wait(_logInDialog);
 			Assert.AreEqual("Sergey Ok", _landingPage.MyPforfile.Text);
+		}
+
+		[TestMethod]
+		public void CloseTest()
+		{
+			// Act
+			_logInDialog.Close();
+
+			// Assert
+			Wait(_logInDialog);
+			Assert.IsFalse(_logInDialog.Root.Displayed);
 		}
 
 		[TestCleanup]
@@ -178,6 +178,11 @@ namespace Lobster.Test.LogInDialog
 					throw new Exception("Timed out");
 				}
 			}
+		}
+
+		private void Login(User user)
+		{
+			_logInDialog.Login(user.Email, user.Password);
 		}
 	}
 }

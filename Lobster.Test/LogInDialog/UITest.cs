@@ -40,26 +40,26 @@ namespace Lobster.Test.LogInDialog
 		#region Dialog General
 
 		[TestMethod]
-		public void LogInDialogIsOpenedTest()
+		public void IsOpenedTest()
 		{
 			Assert.IsTrue(_dialog.Root.Displayed);
 		}
 
 		[TestMethod]
-		public void LogInDialogNameTest()
+		public void NameTest()
 		{
 			Assert.AreEqual(_dialog.Name.Text, "Log In");
 		}
 
 		[TestMethod]
-		public void LogInDialogSizeTest()
+		public void SizeTest()
 		{
 			Assert.AreEqual(_dialog.Root.Size.Height, 560);
 			Assert.AreEqual(_dialog.Root.Size.Width, 430);
 		}
 
 		[TestMethod]
-		public void LogInDialogIsScrollableTest()
+		public void IsScrollableTest()
 		{
 			// Arrange
 			var dialogX = _dialog.Root.Location.X;
@@ -77,26 +77,26 @@ namespace Lobster.Test.LogInDialog
 		#region Email
 
 		[TestMethod]
-		public void LogInDialogEmailIsVisibleTest()
+		public void EmailIsVisibleTest()
 		{
 			Assert.IsTrue(_dialog.EmailTextField.Displayed);
 		}
 
 		[TestMethod]
-		public void LogInDialogEmailTextTest()
+		public void EmailTextTest()
 		{
 			Assert.AreEqual(_dialog.EmailTextField.GetAttribute("data-placeholder"), "E-mail");
 		}
 
 		[TestMethod]
-		public void LogInDialogEmailSizeTest()
+		public void EmailSizeTest()
 		{
 			Assert.AreEqual(_dialog.EmailTextField.Size.Height, 60);
 			Assert.AreEqual(_dialog.EmailTextField.Size.Width, 370);
 		}
 
 		[TestMethod]
-		public void LogInDialogEmailIsEnabledTest()
+		public void EmailIsEnabledTest()
 		{
 			Assert.IsTrue(_dialog.EmailTextField.Enabled);
 		}
@@ -106,26 +106,26 @@ namespace Lobster.Test.LogInDialog
 		#region Password
 
 		[TestMethod]
-		public void LogInDialogPasswordIsVisibleTest()
+		public void PasswordIsVisibleTest()
 		{
 			Assert.IsTrue(_dialog.PasswordTextField.Displayed);
 		}
 
 		[TestMethod]
-		public void LogInDialogPasswordTextTest()
+		public void PasswordTextTest()
 		{
 			Assert.AreEqual(_dialog.PasswordTextField.GetAttribute("data-placeholder"), "Password");
 		}
 
 		[TestMethod]
-		public void LogInDialogPasswordSizeTest()
+		public void PasswordSizeTest()
 		{
 			Assert.AreEqual(_dialog.PasswordTextField.Size.Height, 60);
 			Assert.AreEqual(_dialog.PasswordTextField.Size.Width, 370);
 		}
 
 		[TestMethod]
-		public void LogInDialogPasswordIsEnabledTest()
+		public void PasswordIsEnabledTest()
 		{
 			Assert.IsTrue(_dialog.PasswordTextField.Enabled);
 		}
@@ -135,25 +135,25 @@ namespace Lobster.Test.LogInDialog
 		#region Login Button
 
 		[TestMethod]
-		public void LogInDialogLoginButtonIsVisibleTest()
+		public void LoginButtonIsVisibleTest()
 		{
 			Assert.IsTrue(_dialog.LoginButton.Displayed);
 		}
 
 		[TestMethod]
-		public void LogInDialogLoginButtonIsEnabledTest()
+		public void LoginButtonIsEnabledTest()
 		{
 			Assert.IsTrue(_dialog.LoginButton.Enabled);
 		}
 
 		[TestMethod]
-		public void LogInDialogLoginButtonTextTest()
+		public void LoginButtonTextTest()
 		{
 			Assert.AreEqual(_dialog.LoginButton.GetAttribute("value"), "Login");
 		}
 
 		[TestMethod]
-		public void LogInDialogLoginButtonSizeTest()
+		public void LoginButtonSizeTest()
 		{
 			Assert.AreEqual(_dialog.LoginButton.Size.Height, 50);
 			Assert.AreEqual(_dialog.LoginButton.Size.Width, 91);
@@ -164,25 +164,25 @@ namespace Lobster.Test.LogInDialog
 		#region Facebook Button
 
 		[TestMethod]
-		public void LogInDialogFacebookButtonIsVisibleTest()
+		public void FacebookButtonIsVisibleTest()
 		{
 			Assert.IsTrue(_dialog.ViaFacebookButtton.Displayed);
 		}
 
 		[TestMethod]
-		public void LogInDialogFacebookButtonIsEnabledTest()
+		public void FacebookButtonIsEnabledTest()
 		{
 			Assert.IsTrue(_dialog.ViaFacebookButtton.Enabled);
 		}
 
 		[TestMethod]
-		public void LogInDialogFacebookButtonTextTest()
+		public void FacebookButtonTextTest()
 		{
 			Assert.AreEqual(_dialog.ViaFacebookButtton.Text, "via Facebook");
 		}
 
 		[TestMethod]
-		public void LogInDialogFacebookButtonSizeTest()
+		public void FacebookButtonSizeTest()
 		{
 			Assert.AreEqual(_dialog.ViaFacebookButtton.Size.Height, 48);
 			Assert.AreEqual(_dialog.ViaFacebookButtton.Size.Width, 155);
@@ -193,19 +193,19 @@ namespace Lobster.Test.LogInDialog
 		#region Sign Up Link
 
 		[TestMethod]
-		public void LogInDialogSignUpLinkIsVisibleTest()
+		public void SignUpLinkIsVisibleTest()
 		{
 			Assert.IsTrue(_dialog.SignUpLink.Displayed);
 		}
 
 		[TestMethod]
-		public void LogInDialogSignUpLinkIsEnabledTestTest()
+		public void SignUpLinkIsEnabledTestTest()
 		{
 			Assert.IsTrue(_dialog.SignUpLink.Enabled);
 		}
 
 		[TestMethod]
-		public void LogInDialogSignUpLinkTextTest()
+		public void SignUpLinkTextTest()
 		{
 			Assert.AreEqual(_dialog.SignUpLink.Text, "Sign up");
 		}
@@ -215,19 +215,19 @@ namespace Lobster.Test.LogInDialog
 		#region Forgot password link
 
 		[TestMethod]
-		public void LogInDialogForgotPasswordLinkIsVisibleTest()
+		public void ForgotPasswordLinkIsVisibleTest()
 		{
 			Assert.IsTrue(_dialog.ForgotPasswordLink.Displayed);
 		}
 
 		[TestMethod]
-		public void LogInDialogForgotPasswordIsEnabledTest()
+		public void ForgotPasswordIsEnabledTest()
 		{
 			Assert.IsTrue(_dialog.ForgotPasswordLink.Enabled);
 		}
 
 		[TestMethod]
-		public void LogInDialogForgotPasswordTextTest()
+		public void ForgotPasswordTextTest()
 		{
 			Assert.AreEqual(_dialog.ForgotPasswordLink.Text, "Forgot password");
 		}
@@ -237,13 +237,13 @@ namespace Lobster.Test.LogInDialog
 		#region Close button
 
 		[TestMethod]
-		public void LogInDialogCloseButtonIsVisibleTest()
+		public void CloseButtonIsVisibleTest()
 		{
 			Assert.IsTrue(_dialog.CloseButton.Displayed);
 		}
 
 		[TestMethod]
-		public void LogInDialogCloseButtonIsEnabledTest()
+		public void CloseButtonIsEnabledTest()
 		{
 			Assert.IsTrue(_dialog.CloseButton.Enabled);
 		}
