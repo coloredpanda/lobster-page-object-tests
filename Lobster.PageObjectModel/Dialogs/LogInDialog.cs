@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 
@@ -98,22 +97,9 @@ namespace Lobster.PageObjectModel.Dialogs
 			ResendLink.Click();
 		}
 
-		public void WaitForClose()
+		internal override bool IsDisplayed()
 		{
-			var start = 0;
-			const int finish = 5;
-
-			while (Root.Displayed)
-			{
-				Thread.Sleep(1000);
-
-				start++;
-
-				if (start == finish)
-				{
-					throw new Exception("Timed out");
-				}
-			}
+			return Root.Displayed;
 		}
 	}
 }

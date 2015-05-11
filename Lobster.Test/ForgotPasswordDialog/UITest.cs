@@ -27,7 +27,7 @@ namespace Lobster.Test.ForgotPasswordDialog
 			LoginDialog = HomePage.OpenLogInDialog();
 			ForgotPasswordDialog = LoginDialog.ForgotPassword();
 
-			Helpers.Wait(ForgotPasswordDialog.Root);
+			ForgotPasswordDialog.WaitElementToAppear(ForgotPasswordDialog.Root);
 		}
 
 		[TestInitialize]
@@ -75,8 +75,8 @@ namespace Lobster.Test.ForgotPasswordDialog
 			// Act
 			Browser.GetDriver.Keyboard.SendKeys(Keys.PageDown);
 
-			Assert.AreEqual(ForgotPasswordDialog.Root.Location.X, dialogX);
-			Assert.AreEqual(ForgotPasswordDialog.Root.GetCssValue("top"), dialogMarginTop);
+			Assert.AreEqual(dialogX, ForgotPasswordDialog.Root.Location.X);
+			Assert.AreEqual(dialogMarginTop, ForgotPasswordDialog.Root.GetCssValue("top"));
 		}
 
 		#endregion

@@ -36,7 +36,7 @@ namespace Lobster.Test.ForgotPasswordDialog
 			ForgotPasswordDialog.Close();
 
 			// Assert
-			ForgotPasswordDialog.WaitClose();
+			ForgotPasswordDialog.WaitForClose();
 			Assert.IsFalse(ForgotPasswordDialog.Root.Displayed);
 		}
 
@@ -47,7 +47,7 @@ namespace Lobster.Test.ForgotPasswordDialog
 			ForgotPasswordDialog.BackToLogin();
 
 			// Assert
-			ForgotPasswordDialog.WaitClose();
+			ForgotPasswordDialog.WaitForClose();
 			Assert.IsFalse(ForgotPasswordDialog.Root.Displayed);
 			Assert.IsTrue(LogInDialog.Root.Displayed);
 		}
@@ -58,7 +58,7 @@ namespace Lobster.Test.ForgotPasswordDialog
 			// Arrange
 			Gmail.DeleteUnread();
 			ForgotPasswordDialog.HelpMe(Users.Activated);
-			ForgotPasswordDialog.WaitClose();
+			ForgotPasswordDialog.WaitForClose();
 			Gmail.WaitLetter();
 			Gmail.GetLetterLinks();
 			
@@ -74,7 +74,7 @@ namespace Lobster.Test.ForgotPasswordDialog
 			signedInPage.Open();
 
 			// Assert
-			updateDialog.WaitClose();
+			updateDialog.WaitForClose();
 			Assert.IsFalse(ForgotPasswordDialog.Root.Displayed);
 			Assert.AreEqual("http://lobster.media/marketplace", Browser.GetDriver.Url);
 			Assert.AreEqual("Your password has been updated and you are now signed in!", alertText);
@@ -88,7 +88,7 @@ namespace Lobster.Test.ForgotPasswordDialog
 			// Arrange
 			Gmail.DeleteUnread();
 			ForgotPasswordDialog.HelpMe(Users.Activated);
-			ForgotPasswordDialog.WaitClose();
+			ForgotPasswordDialog.WaitForClose();
 			Gmail.WaitLetter();
 			Gmail.GetLetterLinks();
 
@@ -111,7 +111,7 @@ namespace Lobster.Test.ForgotPasswordDialog
 			// Arrange
 			Gmail.DeleteUnread();
 			ForgotPasswordDialog.HelpMe(Users.Registered);
-			ForgotPasswordDialog.WaitClose();
+			ForgotPasswordDialog.WaitForClose();
 			Gmail.WaitLetter();
 			Gmail.GetLetterLinks();
 
@@ -127,7 +127,7 @@ namespace Lobster.Test.ForgotPasswordDialog
 			signedInPage.Open();
 
 			// Assert
-			updateDialog.WaitClose();
+			updateDialog.WaitForClose();
 			Assert.IsFalse(ForgotPasswordDialog.Root.Displayed);
 			Assert.AreEqual("http://lobster.media/marketplace", Browser.GetDriver.Url);
 			Assert.AreEqual("Your password has been updated and you are now signed in!", alertText);

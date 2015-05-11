@@ -63,22 +63,9 @@ namespace Lobster.PageObjectModel.Dialogs
 			CloseButton.Click();
 		}
 
-		public void WaitClose()
+		internal override bool IsDisplayed()
 		{
-			var start = 0;
-			const int finish = 5;
-
-			while (Root.Displayed)
-			{
-				Thread.Sleep(1000);
-
-				start++;
-
-				if (start == finish)
-				{
-					throw new Exception("Timed out");
-				}
-			}
+			return Root.Displayed;
 		}
 	}
 }

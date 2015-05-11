@@ -27,5 +27,25 @@ namespace Lobster.PageObjectModel.Dialogs
 				}
 			}
 		}
+
+		internal abstract bool IsDisplayed();
+
+		public void WaitForClose()
+		{
+			var start = 0;
+			const int finish = 5;
+
+			while (IsDisplayed())
+			{
+				Thread.Sleep(1000);
+
+				start++;
+
+				if (start == finish)
+				{
+					throw new Exception("Timed out");
+				}
+			}
+		}
 	}
 }

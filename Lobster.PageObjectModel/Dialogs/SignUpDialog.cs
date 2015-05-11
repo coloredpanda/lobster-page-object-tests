@@ -10,5 +10,10 @@ namespace Lobster.PageObjectModel.Dialogs
 
 		[FindsBy(How = How.XPath, Using = "/html/body/div[7]/div[1]/span")]
 		public IWebElement Name { get; set; }
+
+		internal override bool IsDisplayed()
+		{
+			return Root.Displayed;
+		}
 	}
 }

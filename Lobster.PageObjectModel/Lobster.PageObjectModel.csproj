@@ -47,7 +47,6 @@
     <Compile Include="Dialogs\Dialog.cs" />
     <Compile Include="Dialogs\Dialogs.cs" />
     <Compile Include="Dialogs\ForgotPasswordDialog.cs" />
-    <Compile Include="Dialogs\Helper.cs" />
     <Compile Include="Dialogs\LogInDialog.cs" />
     <Compile Include="Dialogs\ResendDialog.cs" />
     <Compile Include="Dialogs\ResendPasswordDialog.cs" />

@@ -43,5 +43,10 @@ namespace Lobster.PageObjectModel.Dialogs
 			Browser.Wait();
 			return NameElement.Text;
 		}
+
+		internal override bool IsDisplayed()
+		{
+			return Root.Displayed;
+		}
 	}
 }

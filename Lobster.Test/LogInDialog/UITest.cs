@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Lobster.PageObjectModel;
+﻿using Lobster.PageObjectModel;
 using Lobster.PageObjectModel.Pages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
