@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using Lobster.PageObjectModel;
-using Lobster.PageObjectModel.Dialogs;
 using Lobster.PageObjectModel.Pages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
@@ -43,6 +42,12 @@ namespace Lobster.Test.LogInDialog
 		public void IsOpenedTest()
 		{
 			Assert.IsTrue(_dialog.Root.Displayed);
+		}
+
+		[TestMethod]
+		public void LocationTest()
+		{
+			Assert.AreEqual("100", _dialog.Root.GetCssValue("top"));
 		}
 
 		[TestMethod]

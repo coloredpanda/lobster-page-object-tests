@@ -2,6 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using System.Threading;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 
@@ -156,12 +157,59 @@ namespace Lobster.PageObjectModel
 
 		public static void CloseNewWindow()
 		{
-			if (!HasNewWindow()) return;
+			if (!HasNewWindow()) 
+				return;
 		}
 
 		public static void CloseNewWindow(IWebDriver window)
 		{
 			window.Close();
+		}
+
+		public static string GetAlertText()
+		{
+			WaitForAlert();
+			return _webDriver.SwitchTo().Alert().Text;
+		}
+
+		public static void AcceptAlert()
+		{
+			WaitForAlert();
+			_webDriver.SwitchTo().Alert().Accept();
+		}
+
+		internal static void WaitForAlert()
+		{
+			var start = 0;
+			const int finish = 5;
+
+			while (AlertIsPresent(_webDriver) == null)
+			{
+				Thread.Sleep(1000);
+
+				start++;
+
+				if (start == finish)
+				{
+					throw new Exception("Timed out");
+				}
+			}
+		} 
+
+		private static IAlert AlertIsPresent(IWebDriver drv)
+		{
+			try
+			{
+				// Attempt to switch to an alert
+				return drv.SwitchTo().Alert();
+			}
+			catch (OpenQA.Selenium.NoAlertPresentException)
+			{
+				// We ignore this execption, as it means there is no alert present...yet.
+				return null;
+			}
+
+			// Other exceptions will be ignored and up the stack
 		}
 	}
 }

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Threading;
+﻿using Lobster.Mail;
 using Lobster.PageObjectModel;
 using Lobster.PageObjectModel.Dialogs;
 using Lobster.PageObjectModel.Pages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium;
 
 namespace Lobster.Test.LogInDialog
 {
@@ -33,6 +31,7 @@ namespace Lobster.Test.LogInDialog
 			Login(Users.EmptyPassword);
 
 			// Assert
+			Helpers.Wait(_logInDialog.ErrorMessage);
 			Assert.IsFalse(_logInDialog.ErrorMessage.Displayed);
 			Assert.AreEqual("Invalid password", _logInDialog.ErrorMessage.Text);
 		}
@@ -44,7 +43,7 @@ namespace Lobster.Test.LogInDialog
 			Login(Users.NotEmail);
 
 			// Assert
-			Wait(_logInDialog.ErrorMessage);
+			Helpers.Wait(_logInDialog.ErrorMessage);
 			Assert.IsTrue(_logInDialog.ErrorMessage.Displayed);
 			Assert.AreEqual("Invalid email", _logInDialog.ErrorMessage.Text);
 		}
@@ -56,7 +55,7 @@ namespace Lobster.Test.LogInDialog
 			Login(Users.NoOne);
 
 			// Assert
-			Wait(_logInDialog.ErrorMessage);
+			Helpers.Wait(_logInDialog.ErrorMessage);
 			Assert.IsTrue(_logInDialog.ErrorMessage.Displayed);
 			Assert.AreEqual("Invalid email", _logInDialog.ErrorMessage.Text);
 		}
@@ -68,7 +67,7 @@ namespace Lobster.Test.LogInDialog
 			Login(Users.EmptyEmail);
 
 			// Assert
-			Wait(_logInDialog.ErrorMessage);
+			Helpers.Wait(_logInDialog.ErrorMessage);
 			Assert.IsTrue(_logInDialog.ErrorMessage.Displayed);
 			Assert.AreEqual("Invalid email", _logInDialog.ErrorMessage.Text);
 		}
@@ -80,7 +79,7 @@ namespace Lobster.Test.LogInDialog
 			Login(Users.WrongPassword);
 
 			// Assert
-			Wait(_logInDialog.ErrorMessage);
+			Helpers.Wait(_logInDialog.ErrorMessage);
 			Assert.IsTrue(_logInDialog.ErrorMessage.Displayed);
 			Assert.AreEqual("Invalid password", _logInDialog.ErrorMessage.Text);
 		}
@@ -92,9 +91,35 @@ namespace Lobster.Test.LogInDialog
 			Login(Users.Registered);
 
 			// Assert
-			Wait(_logInDialog.ErrorMessage);
+			Helpers.Wait(_logInDialog.ErrorMessage);
 			Assert.IsTrue(_logInDialog.ErrorMessage.Displayed);
 			Assert.AreEqual("Your e-mail address is not confirmed. Please check your e-mail. Or click here to resend confirmation letter.", _logInDialog.ErrorMessage.Text);
+		}
+
+		[TestMethod]
+		public void UserRegisteredResendTest()
+		{
+			// Arrange
+			Gmail.DeleteUnread();
+
+			// Act
+			Login(Users.Registered);
+			Helpers.Wait(_logInDialog.ErrorMessage);
+			_logInDialog.Resend();
+			var resend = Dialogs.Resend;
+
+			// Assert UI
+			Helpers.Wait(_logInDialog);
+			Helpers.Wait(resend.Root);
+			Assert.IsFalse(_logInDialog.Root.Displayed);
+			Assert.IsTrue(resend.Root.Displayed);
+			Helpers.WaitLetter();
+			var letter = Gmail.GetMessageBody();
+
+			// Assert Gmail
+			Assert.AreEqual(1, Gmail.GetUnreadMessagesCount());
+			var email = Gmail.GetEmailFromLetter(letter);
+			Assert.AreEqual(Users.Registered.Email, email.Text);
 		}
 
 		[TestMethod]
@@ -104,8 +129,8 @@ namespace Lobster.Test.LogInDialog
 			Login(Users.Activated);
 
 			// Assert
-			Wait(_logInDialog);
-			Assert.AreEqual("My profile",_landingPage.MyPforfile.Text);
+			Helpers.Wait(_logInDialog);
+			Assert.AreEqual("My profile",_landingPage.MyProfile.Text);
 		}
 
 		[TestMethod]
@@ -115,7 +140,7 @@ namespace Lobster.Test.LogInDialog
 			Login(Users.NotRegistered);
 
 			// Assert
-			Wait(_logInDialog.ErrorMessage);
+			Helpers.Wait(_logInDialog.ErrorMessage);
 			Assert.IsTrue(_logInDialog.ErrorMessage.Displayed);
 			Assert.AreEqual("You are not registered", _logInDialog.ErrorMessage.Text);
 		}
@@ -128,20 +153,20 @@ namespace Lobster.Test.LogInDialog
 
 			// Assert
 			//Assert.IsTrue(Browser.HasNewWindow());
-			Wait(_logInDialog);
-			Assert.AreEqual("Sergey Ok", _landingPage.MyPforfile.Text);
+			Helpers.Wait(_logInDialog);
+			Assert.AreEqual("Max Stern", _landingPage.MyProfile.Text);
 		}
 
 		[TestMethod]
 		public void UserFacebookActivatedNoEmailTest()
 		{
-			// Act
-			FacebookLogin(Users.FacebookNoEmail);
+			//// Act
+			//FacebookLogin(Users.FacebookNoEmail);
 
-			// Assert
-			//Assert.IsTrue(Browser.HasNewWindow());
-			Wait(_logInDialog);
-			Assert.AreEqual("Sergey Ok", _landingPage.MyPforfile.Text);
+			//// Assert
+			////Assert.IsTrue(Browser.HasNewWindow());
+			//Helpers.Wait(_logInDialog);
+			//Assert.AreEqual("", _landingPage.MyPforfile.Text);
 		}
 
 		[TestMethod]
@@ -152,8 +177,8 @@ namespace Lobster.Test.LogInDialog
 			var signUp = Dialogs.SignUp;
 
 			// Assert
-			Wait(_logInDialog);
-			Wait(signUp.Root);
+			Helpers.Wait(_logInDialog);
+			Helpers.Wait(signUp.Root);
 			Assert.IsTrue(signUp.Root.Displayed);
 			Assert.AreEqual("Sign up", signUp.Name.Text);
 		}
@@ -166,7 +191,7 @@ namespace Lobster.Test.LogInDialog
 			var forgot = Dialogs.Forgot;
 
 			// Assert
-			Wait(_logInDialog);
+			Helpers.Wait(_logInDialog);
 			Assert.IsFalse(_logInDialog.Root.Displayed);
 			Assert.IsTrue(forgot.Root.Displayed);
 			Assert.AreEqual("Forgot? Do not panic", forgot.Name.Text);
@@ -179,7 +204,7 @@ namespace Lobster.Test.LogInDialog
 			_logInDialog.Close();
 
 			// Assert
-			Wait(_logInDialog);
+			Helpers.Wait(_logInDialog);
 			Assert.IsFalse(_logInDialog.Root.Displayed);
 		}
 
@@ -187,42 +212,6 @@ namespace Lobster.Test.LogInDialog
 		public void CleanUp()
 		{
 			Browser.Quit();
-		}
-
-		private static void Wait(PageObjectModel.Dialogs.LogInDialog dialog)
-		{
-			var start = 0;
-			const int finish = 5;
-
-			while (dialog.Root.Displayed)
-			{
-				Thread.Sleep(1000);
-
-				start++;
-
-				if (start == finish)
-				{
-					throw new Exception("Timed out");
-				}
-			}
-		}
-
-		private static void Wait(IWebElement webElement)
-		{
-			var start = 0;
-			const int finish = 5;
-
-			while (!webElement.Displayed)
-			{
-				Thread.Sleep(1000);
-
-				start++;
-
-				if (start == finish)
-				{
-					throw new Exception("Timed out");
-				}
-			}
 		}
 
 		private static void Login(User user)
@@ -238,5 +227,7 @@ namespace Lobster.Test.LogInDialog
 			facebook.Login(user.Email, user.Password);
 			Browser.GetCurrentWindow();
 		}
+
+
 	}
 }

@@ -23,8 +23,8 @@ namespace Lobster.PageObjectModel.Pages
 		[FindsBy(How = How.XPath, Using = "//*[@class='m-navigation m-navigation--banner']/ul/li[1]/a")]
 		public IWebElement MarketplaceButton { get; set; }
 
-		[FindsBy(How = How.XPath, Using = "//*[@class='is-signed-in']/a")]
-		public IWebElement MyPforfile { get; set; }
+		[FindsBy(How = How.XPath, Using = "//*[@class='m-navigation js-mobile-navigation']/ul/li[3]/a")]
+		public IWebElement MyProfile { get; set; }
 
 		#endregion
 

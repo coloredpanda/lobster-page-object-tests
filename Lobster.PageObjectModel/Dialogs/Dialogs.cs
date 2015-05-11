@@ -33,5 +33,25 @@ namespace Lobster.PageObjectModel.Dialogs
 				return dialog;
 			}
 		}
+
+		public static ResendDialog Resend
+		{
+			get
+			{
+				var dialog = new ResendDialog();
+				PageFactory.InitElements(Browser.Driver, dialog);
+				return dialog;
+			}
+		}
+
+		public static UpdatePasswordDialog Update
+		{
+			get
+			{
+				var dialog = new UpdatePasswordDialog();
+				PageFactory.InitElements(Browser.Driver, dialog);
+				return dialog;
+			}
+		}
 	}
 }

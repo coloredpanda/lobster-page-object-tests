@@ -40,6 +40,9 @@ namespace Lobster.PageObjectModel.Dialogs
 		[FindsBy(How = How.XPath, Using = "//*[@id='sign_in_user']/div[4]")]
 		public IWebElement ErrorMessage { get; set; }
 
+		[FindsBy(How = How.XPath, Using = "//*[@id='sign_in_user']/div[4]/a")]
+		public IWebElement ResendLink { get; set; }
+
 		public void Close()
 		{
 			while (!Root.Displayed)
@@ -85,6 +88,12 @@ namespace Lobster.PageObjectModel.Dialogs
 		{
 			Browser.Wait();
 			ViaFacebookButtton.Click();
+		}
+
+		public void Resend()
+		{
+			Browser.Wait();
+			ResendLink.Click();
 		}
 	}
 }
