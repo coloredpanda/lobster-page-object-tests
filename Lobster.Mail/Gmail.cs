@@ -7,6 +7,7 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Gmail.v1;
 using Google.Apis.Gmail.v1.Data;
 using HtmlAgilityPack;
+using Thread = System.Threading.Thread;
 
 namespace Lobster.Mail
 {
@@ -17,6 +18,8 @@ namespace Lobster.Mail
 		public static GmailService Service;
 
 		public static string User = "me";
+
+		public static Dictionary<string, LinkItem> LetterLinks; 
 
 		static Gmail()
 		{
@@ -162,5 +165,38 @@ namespace Lobster.Mail
 			}
 			return list;
 		}
+
+		public static void WaitLetter()
+		{
+			var start = 0;
+			const int finish = 5;
+
+			while (GetUnreadMessagesCount() <= 0)
+			{
+				Thread.Sleep(1000);
+
+				start++;
+
+				if (start == finish)
+				{
+					throw new Exception("Timed out");
+				}
+			}
+		}
+
+		public static void GetLetterLinks()
+		{
+			var letter = GetMessageBody();
+			var links = Find(letter);
+
+			LetterLinks = new Dictionary<string, LinkItem>
+			{
+				{"Header", links[0]},
+				{"User", links[1]},
+				{"Reset", links[2]},
+				{"Suport", links[3]},
+				{"Footer", links[4]},
+			};
+		} 
 	}
 }

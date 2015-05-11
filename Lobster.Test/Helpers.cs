@@ -46,23 +46,5 @@ namespace Lobster.Test
 				}
 			}
 		}
-
-		public static void WaitLetter()
-		{
-			var start = 0;
-			const int finish = 5;
-
-			while (Gmail.GetUnreadMessagesCount() <= 0)
-			{
-				Thread.Sleep(1000);
-
-				start++;
-
-				if (start == finish)
-				{
-					throw new Exception("Timed out");
-				}
-			}
-		}
 	}
 }

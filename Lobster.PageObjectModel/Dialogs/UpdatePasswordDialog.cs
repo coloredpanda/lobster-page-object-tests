@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.SqlServer.Server;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 
@@ -34,7 +35,7 @@ namespace Lobster.PageObjectModel.Dialogs
 		[FindsBy(How = How.XPath, Using = "//*[@id='forgotpassword_edit']/div[2]")]
 		public IWebElement ErrorMessageText { get; set; }
 
-		public void UpdatePassword(string newPassword)
+		public void UpdatePassword(string newPassword, string confirmPassword)
 		{
 			Browser.Wait();
 

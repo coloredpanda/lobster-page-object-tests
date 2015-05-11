@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using System.Threading;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 
 namespace Lobster.PageObjectModel.Dialogs
@@ -26,13 +27,13 @@ namespace Lobster.PageObjectModel.Dialogs
 		[FindsBy(How = How.XPath, Using = "/html/body/div[3]/div[1]/a")]
 		public IWebElement CloseButton { get; set; }
 
-		public void HelpMe(string email)
+		public void HelpMe(User user)
 		{
 			Browser.Wait();
 			EmailTextField.Clear();
-			EmailTextField.SendKeys(email);
+			EmailTextField.SendKeys(user.Email);
 
-			Browser.Wait();
+			Thread.Sleep(1000);
 			HelpMeButton.Click();
 		}
 

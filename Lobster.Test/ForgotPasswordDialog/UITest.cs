@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-using Lobster.PageObjectModel;
-using Lobster.PageObjectModel.Dialogs;
+﻿using Lobster.PageObjectModel;
 using Lobster.PageObjectModel.Pages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
@@ -11,11 +8,11 @@ namespace Lobster.Test.ForgotPasswordDialog
 	[TestClass]
 	public class UiTest
 	{
-		private static HomePage _homePage;
+		internal static HomePage HomePage;
 
-		private static PageObjectModel.Dialogs.LogInDialog _loginDialog;
+		internal static PageObjectModel.Dialogs.LogInDialog LoginDialog;
 
-		private static PageObjectModel.Dialogs.ForgotPasswordDialog _forgotPasswordDialog;
+		internal static PageObjectModel.Dialogs.ForgotPasswordDialog ForgotPasswordDialog;
 
 		public TestContext TestContext { get; set; }
 
@@ -24,16 +21,13 @@ namespace Lobster.Test.ForgotPasswordDialog
 		{
 			Browser.Open();
 
-			_homePage = Pages.Home;
-			_homePage.Open();
+			HomePage = Pages.Home;
+			HomePage.Open();
 
-			_loginDialog = _homePage.OpenLogInDialog();
+			LoginDialog = HomePage.OpenLogInDialog();
+			ForgotPasswordDialog = LoginDialog.ForgotPassword();
 
-			_loginDialog.ForgotPassword();
-
-			_forgotPasswordDialog = Dialogs.Forgot;
-
-			Helpers.Wait(_forgotPasswordDialog.Root);
+			Helpers.Wait(ForgotPasswordDialog.Root);
 		}
 
 		[TestInitialize]
@@ -48,7 +42,7 @@ namespace Lobster.Test.ForgotPasswordDialog
 		public void TestMethod1()
 		{
 			// Assert
-			Assert.IsTrue(_forgotPasswordDialog.Root.Displayed);
+			Assert.IsTrue(ForgotPasswordDialog.Root.Displayed);
 		}
 
 		#region Dialog General
@@ -56,40 +50,40 @@ namespace Lobster.Test.ForgotPasswordDialog
 		[TestMethod]
 		public void IsOpenedTest()
 		{
-			Assert.IsTrue(_forgotPasswordDialog.Root.Displayed);
+			Assert.IsTrue(ForgotPasswordDialog.Root.Displayed);
 		}
 
 		[TestMethod]
 		public void LocationTest()
 		{
-			Assert.AreEqual("100px", _forgotPasswordDialog.Root.GetCssValue("top"));
+			Assert.AreEqual("100px", ForgotPasswordDialog.Root.GetCssValue("top"));
 		}
 
 		[TestMethod]
 		public void NameTest()
 		{
-			Assert.AreEqual("Forgot? Do not panic", _forgotPasswordDialog.Name.Text);
+			Assert.AreEqual("Forgot? Do not panic", ForgotPasswordDialog.Name.Text);
 		}
 
 		[TestMethod]
 		public void SizeTest()
 		{
-			Assert.AreEqual(258, _forgotPasswordDialog.Root.Size.Height);
-			Assert.AreEqual(430, _forgotPasswordDialog.Root.Size.Width);
+			Assert.AreEqual(258, ForgotPasswordDialog.Root.Size.Height);
+			Assert.AreEqual(430, ForgotPasswordDialog.Root.Size.Width);
 		}
 
 		[TestMethod]
 		public void IsScrollableTest()
 		{
 			// Arrange
-			var dialogX = _forgotPasswordDialog.Root.Location.X;
-			var dialogMarginTop = _forgotPasswordDialog.Root.GetCssValue("top");
+			var dialogX = ForgotPasswordDialog.Root.Location.X;
+			var dialogMarginTop = ForgotPasswordDialog.Root.GetCssValue("top");
 
 			// Act
 			Browser.GetDriver.Keyboard.SendKeys(Keys.PageDown);
 
-			Assert.AreEqual(_forgotPasswordDialog.Root.Location.X, dialogX);
-			Assert.AreEqual(_forgotPasswordDialog.Root.GetCssValue("top"), dialogMarginTop);
+			Assert.AreEqual(ForgotPasswordDialog.Root.Location.X, dialogX);
+			Assert.AreEqual(ForgotPasswordDialog.Root.GetCssValue("top"), dialogMarginTop);
 		}
 
 		#endregion
@@ -99,55 +93,55 @@ namespace Lobster.Test.ForgotPasswordDialog
 		[TestMethod]
 		public void EmailIsVisibleTest()
 		{
-			Assert.IsTrue(_forgotPasswordDialog.EmailTextField.Displayed);
+			Assert.IsTrue(ForgotPasswordDialog.EmailTextField.Displayed);
 		}
 
 		[TestMethod]
 		public void EmailTextTest()
 		{
-			Assert.AreEqual("E-mail", _forgotPasswordDialog.EmailTextField.GetAttribute("data-placeholder"));
+			Assert.AreEqual("E-mail", ForgotPasswordDialog.EmailTextField.GetAttribute("data-placeholder"));
 		}
 
 		[TestMethod]
 		public void EmailSizeTest()
 		{
-			Assert.AreEqual(60, _forgotPasswordDialog.EmailTextField.Size.Height);
-			Assert.AreEqual(370, _forgotPasswordDialog.EmailTextField.Size.Width);
+			Assert.AreEqual(60, ForgotPasswordDialog.EmailTextField.Size.Height);
+			Assert.AreEqual(370, ForgotPasswordDialog.EmailTextField.Size.Width);
 		}
 
 		[TestMethod]
 		public void EmailIsEnabledTest()
 		{
-			Assert.IsTrue(_forgotPasswordDialog.EmailTextField.Enabled);
+			Assert.IsTrue(ForgotPasswordDialog.EmailTextField.Enabled);
 		}
 
 		#endregion
 
-		#region Login Button
+		#region HelpMe Button
 
 		[TestMethod]
-		public void LoginButtonIsVisibleTest()
+		public void HelpMeButtonIsVisibleTest()
 		{
-			Assert.IsTrue(_forgotPasswordDialog.HelpMeButton.Displayed);
+			Assert.IsTrue(ForgotPasswordDialog.HelpMeButton.Displayed);
 		}
 
 		[TestMethod]
-		public void LoginButtonIsEnabledTest()
+		public void HelpMeButtonIsEnabledTest()
 		{
-			Assert.IsTrue(_forgotPasswordDialog.HelpMeButton.Enabled);
+			Assert.IsTrue(ForgotPasswordDialog.HelpMeButton.Enabled);
 		}
 
 		[TestMethod]
-		public void LoginButtonTextTest()
+		public void HelpMeButtonTextTest()
 		{
-			Assert.AreEqual("Help me", _forgotPasswordDialog.HelpMeButton.GetAttribute("value"));
+			Assert.AreEqual("Help me", ForgotPasswordDialog.HelpMeButton.GetAttribute("value"));
 		}
 
 		[TestMethod]
-		public void LoginButtonSizeTest()
+		public void HelpMeButtonSizeTest()
 		{
-			Assert.AreEqual(50, _forgotPasswordDialog.HelpMeButton.Size.Height);
-			Assert.AreEqual(111, _forgotPasswordDialog.HelpMeButton.Size.Width);
+			Assert.AreEqual(50, ForgotPasswordDialog.HelpMeButton.Size.Height);
+			Assert.AreEqual(111, ForgotPasswordDialog.HelpMeButton.Size.Width);
 		}
 
 		#endregion

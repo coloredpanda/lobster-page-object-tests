@@ -11,37 +11,47 @@ namespace Lobster.Test.ForgotPasswordDialog
 	[TestClass]
 	public class FunctionalTest
 	{
-		private static HomePage _landingPage;
+		internal static HomePage LandingPage;
 
-		private static PageObjectModel.Dialogs.LogInDialog _logInDialog;
+		internal static PageObjectModel.Dialogs.LogInDialog LogInDialog;
 
-		private static PageObjectModel.Dialogs.ForgotPasswordDialog _forgotPasswordDialog;
+		internal static PageObjectModel.Dialogs.ForgotPasswordDialog ForgotPasswordDialog;
 
 		[TestInitialize]
 		public void Initialize()
 		{
 			Browser.Open();
 
-			_landingPage = Pages.Home;
-			_landingPage.Open();
+			LandingPage = Pages.Home;
+			LandingPage.Open();
 
-			_logInDialog = _landingPage.OpenLogInDialog();
+			LogInDialog = LandingPage.OpenLogInDialog();
+			ForgotPasswordDialog = LogInDialog.ForgotPassword();
 
-			_logInDialog.ForgotPassword();
-			_forgotPasswordDialog = Dialogs.Forgot;
-
-			Helpers.Wait(_forgotPasswordDialog.Root);
+			Helpers.Wait(ForgotPasswordDialog.Root);
 		}
 
 		[TestMethod]
 		public void CloseTest()
 		{
 			// Act
-			_forgotPasswordDialog.Close();
+			ForgotPasswordDialog.Close();
 
 			// Assert
-			Wait(_forgotPasswordDialog);
-			Assert.IsFalse(_forgotPasswordDialog.Root.Displayed);
+			Wait(ForgotPasswordDialog);
+			Assert.IsFalse(ForgotPasswordDialog.Root.Displayed);
+		}
+
+		[TestMethod]
+		public void BackTest()
+		{
+			// Act
+			ForgotPasswordDialog.BackToLogin();
+
+			// Assert
+			Wait(ForgotPasswordDialog);
+			Assert.IsFalse(ForgotPasswordDialog.Root.Displayed);
+			Assert.IsTrue(LogInDialog.Root.Displayed);
 		}
 
 		[TestMethod]
@@ -49,17 +59,17 @@ namespace Lobster.Test.ForgotPasswordDialog
 		{
 			// Arrange
 			Gmail.DeleteUnread();
-			HelpMe(Users.Activated);
-			Helpers.WaitLetter();
-			var letter = Gmail.GetMessageBody();
-			var links = Gmail.Find(letter);
-			Wait(_forgotPasswordDialog);
-			Assert.AreEqual(Users.Activated.Email, links[1].Text);
-			Browser.Goto(links[2].Href);
+			ForgotPasswordDialog.HelpMe(Users.Activated);
+			Wait(ForgotPasswordDialog);
+			Gmail.WaitLetter();
+			Gmail.GetLetterLinks();
+			
+			Assert.AreEqual(Users.Activated.Email, Gmail.LetterLinks["User"].Text);
+			Browser.Goto(Gmail.LetterLinks["Reset"].Href);
 
 			// Act
 			var updateDialog = Dialogs.Update;
-			updateDialog.UpdatePassword(Users.Activated.Password);
+			updateDialog.UpdatePassword(Users.Activated.Password, Users.Activated.Password);
 			var alertText = Browser.GetAlertText();
 			Browser.AcceptAlert();
 			var signedInPage = Pages.Home;
@@ -67,7 +77,7 @@ namespace Lobster.Test.ForgotPasswordDialog
 
 			// Assert
 			Wait(updateDialog);
-			Assert.IsFalse(_forgotPasswordDialog.Root.Displayed);
+			Assert.IsFalse(ForgotPasswordDialog.Root.Displayed);
 			Assert.AreEqual("http://lobster.media/marketplace", Browser.GetDriver.Url);
 			Assert.AreEqual("Your password has been updated and you are now signed in!", alertText);
 			Assert.IsTrue(signedInPage.AboutButton.Displayed);
@@ -75,70 +85,113 @@ namespace Lobster.Test.ForgotPasswordDialog
 		}
 
 		[TestMethod]
-		public void UserRegisteredTest()
+		public void UserActivatedPasswordMismatchTest()
 		{
+			// Arrange
+			Gmail.DeleteUnread();
+			ForgotPasswordDialog.HelpMe(Users.Activated);
+			Wait(ForgotPasswordDialog);
+			Gmail.WaitLetter();
+			Gmail.GetLetterLinks();
+
+			Assert.AreEqual(Users.Activated.Email, Gmail.LetterLinks["User"].Text);
+			Browser.Goto(Gmail.LetterLinks["Reset"].Href);
+
 			// Act
-			HelpMe(Users.Registered);
+			var updateDialog = Dialogs.Update;
+			updateDialog.UpdatePassword(Users.Activated.Password, Users.WrongPassword.Password);
 
 			// Assert
-			Helpers.Wait(_logInDialog);
-			Assert.AreEqual("My profile", _landingPage.MyProfile.Text);
+			Helpers.Wait(ForgotPasswordDialog.ErrorMessage);
+			Assert.IsTrue(ForgotPasswordDialog.ErrorMessage.Displayed);
+			Assert.AreEqual("This email was not found in our system", ForgotPasswordDialog.ErrorMessage.Text);
+		}
+
+		[TestMethod]
+		public void UserRegisteredTest()
+		{
+			// Arrange
+			Gmail.DeleteUnread();
+			ForgotPasswordDialog.HelpMe(Users.Registered);
+			Wait(ForgotPasswordDialog);
+			Gmail.WaitLetter();
+			Gmail.GetLetterLinks();
+
+			Assert.AreEqual(Users.Registered.Email, Gmail.LetterLinks["User"].Text);
+			Browser.Goto(Gmail.LetterLinks["Reset"].Href);
+
+			// Act
+			var updateDialog = Dialogs.Update;
+			updateDialog.UpdatePassword(Users.Registered.Password, Users.Registered.Password);
+			var alertText = Browser.GetAlertText();
+			Browser.AcceptAlert();
+			var signedInPage = Pages.Home;
+			signedInPage.Open();
+
+			// Assert
+			Wait(updateDialog);
+			Assert.IsFalse(ForgotPasswordDialog.Root.Displayed);
+			Assert.AreEqual("http://lobster.media/marketplace", Browser.GetDriver.Url);
+			Assert.AreEqual("Your password has been updated and you are now signed in!", alertText);
+			Assert.IsTrue(signedInPage.AboutButton.Displayed);
+			Assert.IsTrue(signedInPage.MyProfile.Displayed);
 		}
 
 		[TestMethod]
 		public void UserNotRegisteredTest()
 		{
+			// Arrange
+			Gmail.DeleteUnread();
+
 			// Act
-			HelpMe(Users.NotRegistered);
+			ForgotPasswordDialog.HelpMe(Users.NotRegistered);
 
 			// Assert
-			Helpers.Wait(_logInDialog);
-			Assert.AreEqual("My profile", _landingPage.MyProfile.Text);
+			Helpers.Wait(ForgotPasswordDialog.ErrorMessage);
+			Assert.IsTrue(ForgotPasswordDialog.ErrorMessage.Displayed);
+			Assert.AreEqual("This email was not found in our system", ForgotPasswordDialog.ErrorMessage.Text);
 		}
 
 		[TestMethod]
 		public void UserNoOneTest()
 		{
 			// Act
-			HelpMe(Users.NoOne);
+			ForgotPasswordDialog.HelpMe(Users.NoOne);
 
 			// Assert
-			Helpers.Wait(_logInDialog);
-			Assert.AreEqual("My profile", _landingPage.MyProfile.Text);
+			Helpers.Wait(ForgotPasswordDialog.ErrorMessage);
+			Assert.IsTrue(ForgotPasswordDialog.ErrorMessage.Displayed);
+			Assert.AreEqual("Please enter valid email address", ForgotPasswordDialog.ErrorMessage.Text);
 		}
 
 		[TestMethod]
 		public void UserNotEmailTest()
 		{
 			// Act
-			HelpMe(Users.NotEmail);
+			ForgotPasswordDialog.HelpMe(Users.NotEmail);
 
 			// Assert
-			Helpers.Wait(_logInDialog);
-			Assert.AreEqual("My profile", _landingPage.MyProfile.Text);
+			Helpers.Wait(ForgotPasswordDialog.ErrorMessage);
+			Assert.IsTrue(ForgotPasswordDialog.ErrorMessage.Displayed);
+			Assert.AreEqual("Please enter valid email address", ForgotPasswordDialog.ErrorMessage.Text);
 		}
 
 		[TestMethod]
 		public void UserFacebookActivatedFullTest()
 		{
 			// Act
-			HelpMe(Users.FacebookFull);
+			ForgotPasswordDialog.HelpMe(Users.FacebookFull);
 
 			// Assert
 			//Assert.IsTrue(Browser.HasNewWindow());
-			Helpers.Wait(_logInDialog);
-			Assert.AreEqual("Max Stern", _landingPage.MyProfile.Text);
+			Helpers.Wait(LogInDialog);
+			Assert.AreEqual("Max Stern", LandingPage.MyProfile.Text);
 		}
 
 		[TestCleanup]
 		public void CleanUp()
 		{
 			Browser.Quit();
-		}
-
-		private static void HelpMe(User user)
-		{
-			_forgotPasswordDialog.HelpMe(user.Email);
 		}
 
 		private static void Wait(PageObjectModel.Dialogs.ForgotPasswordDialog dialog)
@@ -159,7 +212,7 @@ namespace Lobster.Test.ForgotPasswordDialog
 			}
 		}
 
-		private static void Wait(PageObjectModel.Dialogs.UpdatePasswordDialog dialog)
+		private static void Wait(UpdatePasswordDialog dialog)
 		{
 			var start = 0;
 			const int finish = 5;

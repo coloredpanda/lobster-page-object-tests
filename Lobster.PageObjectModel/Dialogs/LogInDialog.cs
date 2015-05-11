@@ -53,23 +53,25 @@ namespace Lobster.PageObjectModel.Dialogs
 			CloseButton.Click();
 		}
 
-		public void Login(String email, String password)
+		public void Login(User user)
 		{
 			Browser.Wait();
 
 			EmailTextField.Clear();
-			EmailTextField.SendKeys(email);
+			EmailTextField.SendKeys(user.Email);
 			
 			PasswordTextField.Clear();
-			PasswordTextField.SendKeys(password);
+			PasswordTextField.SendKeys(user.Password);
 
 			LoginButton.Click();
 		}
 
-		public void ForgotPassword()
+		public ForgotPasswordDialog ForgotPassword()
 		{
 			Browser.Wait();
 			ForgotPasswordLink.Click();
+
+			return Dialogs.Forgot;
 		}
 
 		public void Signup()

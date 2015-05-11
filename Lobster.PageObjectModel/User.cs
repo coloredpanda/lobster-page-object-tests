@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lobster.Test
+namespace Lobster.PageObjectModel
 {
 	public class User
 	{

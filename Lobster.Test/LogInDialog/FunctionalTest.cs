@@ -9,91 +9,91 @@ namespace Lobster.Test.LogInDialog
 	[TestClass]
 	public class FunctionalTest
 	{
-		private static HomePage _landingPage;
+		internal static HomePage LandingPage;
 
-		private static PageObjectModel.Dialogs.LogInDialog _logInDialog;
+		internal static PageObjectModel.Dialogs.LogInDialog LogInDialog;
 
 		[TestInitialize]
 		public void Initialize()
 		{
 			Browser.Open();
 
-			_landingPage = Pages.Home;
-			_landingPage.Open();
+			LandingPage = Pages.Home;
+			LandingPage.Open();
 
-			_logInDialog = _landingPage.OpenLogInDialog();
+			LogInDialog = LandingPage.OpenLogInDialog();
 		}
 
 		[TestMethod]
 		public void UserEmptyPasswordTest()
 		{
 			// Act
-			Login(Users.EmptyPassword);
+			LogInDialog.Login(Users.EmptyPassword);
 
 			// Assert
-			Helpers.Wait(_logInDialog.ErrorMessage);
-			Assert.IsFalse(_logInDialog.ErrorMessage.Displayed);
-			Assert.AreEqual("Invalid password", _logInDialog.ErrorMessage.Text);
+			Helpers.Wait(LogInDialog.ErrorMessage);
+			Assert.IsFalse(LogInDialog.ErrorMessage.Displayed);
+			Assert.AreEqual("Invalid password", LogInDialog.ErrorMessage.Text);
 		}
 
 		[TestMethod]
 		public void UserNotEmailTest()
 		{
 			// Act
-			Login(Users.NotEmail);
+			LogInDialog.Login(Users.NotEmail);
 
 			// Assert
-			Helpers.Wait(_logInDialog.ErrorMessage);
-			Assert.IsTrue(_logInDialog.ErrorMessage.Displayed);
-			Assert.AreEqual("Invalid email", _logInDialog.ErrorMessage.Text);
+			Helpers.Wait(LogInDialog.ErrorMessage);
+			Assert.IsTrue(LogInDialog.ErrorMessage.Displayed);
+			Assert.AreEqual("Invalid email", LogInDialog.ErrorMessage.Text);
 		}
 
 		[TestMethod]
 		public void UserNoOneTest()
 		{
 			// Act
-			Login(Users.NoOne);
+			LogInDialog.Login(Users.NoOne);
 
 			// Assert
-			Helpers.Wait(_logInDialog.ErrorMessage);
-			Assert.IsTrue(_logInDialog.ErrorMessage.Displayed);
-			Assert.AreEqual("Invalid email", _logInDialog.ErrorMessage.Text);
+			Helpers.Wait(LogInDialog.ErrorMessage);
+			Assert.IsTrue(LogInDialog.ErrorMessage.Displayed);
+			Assert.AreEqual("Invalid email", LogInDialog.ErrorMessage.Text);
 		}
 
 		[TestMethod]
 		public void UserEmptyEmailTest()
 		{
 			// Act
-			Login(Users.EmptyEmail);
+			LogInDialog.Login(Users.EmptyEmail);
 
 			// Assert
-			Helpers.Wait(_logInDialog.ErrorMessage);
-			Assert.IsTrue(_logInDialog.ErrorMessage.Displayed);
-			Assert.AreEqual("Invalid email", _logInDialog.ErrorMessage.Text);
+			Helpers.Wait(LogInDialog.ErrorMessage);
+			Assert.IsTrue(LogInDialog.ErrorMessage.Displayed);
+			Assert.AreEqual("Invalid email", LogInDialog.ErrorMessage.Text);
 		}
 
 		[TestMethod]
 		public void UserWrongPasswordTest()
 		{
 			// Act
-			Login(Users.WrongPassword);
+			LogInDialog.Login(Users.WrongPassword);
 
 			// Assert
-			Helpers.Wait(_logInDialog.ErrorMessage);
-			Assert.IsTrue(_logInDialog.ErrorMessage.Displayed);
-			Assert.AreEqual("Invalid password", _logInDialog.ErrorMessage.Text);
+			Helpers.Wait(LogInDialog.ErrorMessage);
+			Assert.IsTrue(LogInDialog.ErrorMessage.Displayed);
+			Assert.AreEqual("Invalid password", LogInDialog.ErrorMessage.Text);
 		}
 
 		[TestMethod]
 		public void UserRegisteredTest()
 		{
 			// Act
-			Login(Users.Registered);
+			LogInDialog.Login(Users.Registered);
 
 			// Assert
-			Helpers.Wait(_logInDialog.ErrorMessage);
-			Assert.IsTrue(_logInDialog.ErrorMessage.Displayed);
-			Assert.AreEqual("Your e-mail address is not confirmed. Please check your e-mail. Or click here to resend confirmation letter.", _logInDialog.ErrorMessage.Text);
+			Helpers.Wait(LogInDialog.ErrorMessage);
+			Assert.IsTrue(LogInDialog.ErrorMessage.Displayed);
+			Assert.AreEqual("Your e-mail address is not confirmed. Please check your e-mail. Or click here to resend confirmation letter.", LogInDialog.ErrorMessage.Text);
 		}
 
 		[TestMethod]
@@ -103,17 +103,17 @@ namespace Lobster.Test.LogInDialog
 			Gmail.DeleteUnread();
 
 			// Act
-			Login(Users.Registered);
-			Helpers.Wait(_logInDialog.ErrorMessage);
-			_logInDialog.Resend();
+			LogInDialog.Login(Users.Registered);
+			Helpers.Wait(LogInDialog.ErrorMessage);
+			LogInDialog.Resend();
 			var resend = Dialogs.Resend;
 
 			// Assert UI
-			Helpers.Wait(_logInDialog);
+			Helpers.Wait(LogInDialog);
 			Helpers.Wait(resend.Root);
-			Assert.IsFalse(_logInDialog.Root.Displayed);
+			Assert.IsFalse(LogInDialog.Root.Displayed);
 			Assert.IsTrue(resend.Root.Displayed);
-			Helpers.WaitLetter();
+			Gmail.WaitLetter();
 			var letter = Gmail.GetMessageBody();
 
 			// Assert Gmail
@@ -126,23 +126,23 @@ namespace Lobster.Test.LogInDialog
 		public void UserActivatedTest()
 		{
 			// Act
-			Login(Users.Activated);
+			LogInDialog.Login(Users.Activated);
 
 			// Assert
-			Helpers.Wait(_logInDialog);
-			Assert.AreEqual("My profile",_landingPage.MyProfile.Text);
+			Helpers.Wait(LogInDialog);
+			Assert.AreEqual("My profile",LandingPage.MyProfile.Text);
 		}
 
 		[TestMethod]
 		public void UserNotRegisteredTest()
 		{
 			// Act
-			Login(Users.NotRegistered);
+			LogInDialog.Login(Users.NotRegistered);
 
 			// Assert
-			Helpers.Wait(_logInDialog.ErrorMessage);
-			Assert.IsTrue(_logInDialog.ErrorMessage.Displayed);
-			Assert.AreEqual("You are not registered", _logInDialog.ErrorMessage.Text);
+			Helpers.Wait(LogInDialog.ErrorMessage);
+			Assert.IsTrue(LogInDialog.ErrorMessage.Displayed);
+			Assert.AreEqual("You are not registered", LogInDialog.ErrorMessage.Text);
 		}
 
 		[TestMethod]
@@ -153,8 +153,8 @@ namespace Lobster.Test.LogInDialog
 
 			// Assert
 			//Assert.IsTrue(Browser.HasNewWindow());
-			Helpers.Wait(_logInDialog);
-			Assert.AreEqual("Max Stern", _landingPage.MyProfile.Text);
+			Helpers.Wait(LogInDialog);
+			Assert.AreEqual("Max Stern", LandingPage.MyProfile.Text);
 		}
 
 		[TestMethod]
@@ -173,11 +173,11 @@ namespace Lobster.Test.LogInDialog
 		public void ClickSignUpTest()
 		{
 			// Act
-			_logInDialog.Signup();
+			LogInDialog.Signup();
 			var signUp = Dialogs.SignUp;
 
 			// Assert
-			Helpers.Wait(_logInDialog);
+			Helpers.Wait(LogInDialog);
 			Helpers.Wait(signUp.Root);
 			Assert.IsTrue(signUp.Root.Displayed);
 			Assert.AreEqual("Sign up", signUp.Name.Text);
@@ -187,12 +187,12 @@ namespace Lobster.Test.LogInDialog
 		public void ClickForgotPasswordTest()
 		{
 			// Act
-			_logInDialog.ForgotPassword();
+			LogInDialog.ForgotPassword();
 			var forgot = Dialogs.Forgot;
 
 			// Assert
-			Helpers.Wait(_logInDialog);
-			Assert.IsFalse(_logInDialog.Root.Displayed);
+			Helpers.Wait(LogInDialog);
+			Assert.IsFalse(LogInDialog.Root.Displayed);
 			Assert.IsTrue(forgot.Root.Displayed);
 			Assert.AreEqual("Forgot? Do not panic", forgot.Name.Text);
 		}
@@ -201,11 +201,11 @@ namespace Lobster.Test.LogInDialog
 		public void CloseTest()
 		{
 			// Act
-			_logInDialog.Close();
+			LogInDialog.Close();
 
 			// Assert
-			Helpers.Wait(_logInDialog);
-			Assert.IsFalse(_logInDialog.Root.Displayed);
+			Helpers.Wait(LogInDialog);
+			Assert.IsFalse(LogInDialog.Root.Displayed);
 		}
 
 		[TestCleanup]
@@ -214,20 +214,13 @@ namespace Lobster.Test.LogInDialog
 			Browser.Quit();
 		}
 
-		private static void Login(User user)
-		{
-			_logInDialog.Login(user.Email, user.Password);
-		}
-
 		private static void FacebookLogin(User user)
 		{
-			_logInDialog.ViaFacebook();
+			LogInDialog.ViaFacebook();
 			var facebook = Pages.Facebook;
 			Browser.GetNewWindow();
 			facebook.Login(user.Email, user.Password);
 			Browser.GetCurrentWindow();
 		}
-
-
 	}
 }
