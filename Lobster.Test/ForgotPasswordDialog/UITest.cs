@@ -38,13 +38,6 @@ namespace Lobster.Test.ForgotPasswordDialog
 			//	TestContext.TestName);
 		}
 
-		[TestMethod]
-		public void TestMethod1()
-		{
-			// Assert
-			Assert.IsTrue(ForgotPasswordDialog.Root.Displayed);
-		}
-
 		#region Dialog General
 
 		[TestMethod]
