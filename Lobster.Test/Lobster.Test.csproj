@@ -60,7 +60,6 @@
   <ItemGroup>
     <Compile Include="ForgotPasswordDialog\FunctionalTest.cs" />
     <Compile Include="ForgotPasswordDialog\UITest.cs" />
-    <Compile Include="Helpers.cs" />
     <Compile Include="LogInDialog\UITest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LogInDialog\FunctionalTest.cs" />

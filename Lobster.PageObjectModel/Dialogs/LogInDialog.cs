@@ -5,7 +5,7 @@ using OpenQA.Selenium.Support.PageObjects;
 
 namespace Lobster.PageObjectModel.Dialogs
 {
-	public class LogInDialog
+	public class LogInDialog : Dialog
 	{
 		[FindsBy(How = How.XPath, Using = "/html/body/div[5]")]
 		public IWebElement Root { get; set; }
@@ -96,6 +96,24 @@ namespace Lobster.PageObjectModel.Dialogs
 		{
 			Browser.Wait();
 			ResendLink.Click();
+		}
+
+		public void WaitForClose()
+		{
+			var start = 0;
+			const int finish = 5;
+
+			while (Root.Displayed)
+			{
+				Thread.Sleep(1000);
+
+				start++;
+
+				if (start == finish)
+				{
+					throw new Exception("Timed out");
+				}
+			}
 		}
 	}
 }

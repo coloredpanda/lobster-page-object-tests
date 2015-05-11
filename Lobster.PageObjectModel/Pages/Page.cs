@@ -1,6 +1,8 @@
 ﻿using Lobster.PageObjectModel.Common;
 using System;
+using System.Threading;
 using Lobster.PageObjectModel.Setup;
+using OpenQA.Selenium;
 
 namespace Lobster.PageObjectModel.Pages
 {
@@ -28,6 +30,24 @@ namespace Lobster.PageObjectModel.Pages
 			{
 				throw new Exception(GetType().Name + " could not be loaded. Check page url is correct in app.config." +
 									" " + e.Message);
+			}
+		}
+
+		public void WaitElementToAppear(IWebElement webElement)
+		{
+			var start = 0;
+			const int finish = 5;
+
+			while (!webElement.Displayed)
+			{
+				Thread.Sleep(1000);
+
+				start++;
+
+				if (start == finish)
+				{
+					throw new Exception("Timed out");
+				}
 			}
 		}
 	}

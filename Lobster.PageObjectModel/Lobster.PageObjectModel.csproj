@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Browser.cs" />
     <Compile Include="Common\PageObject.cs" />
+    <Compile Include="Dialogs\Dialog.cs" />
     <Compile Include="Dialogs\Dialogs.cs" />
     <Compile Include="Dialogs\ForgotPasswordDialog.cs" />
     <Compile Include="Dialogs\Helper.cs" />

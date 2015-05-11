@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.SqlServer.Server;
 using OpenQA.Selenium;
@@ -9,7 +10,7 @@ using OpenQA.Selenium.Support.PageObjects;
 
 namespace Lobster.PageObjectModel.Dialogs
 {
-	public class UpdatePasswordDialog
+	public class UpdatePasswordDialog : Dialog
 	{
 		[FindsBy(How = How.XPath, Using = "/html/body/div[5]")]
 		public IWebElement Root { get; set; }
@@ -60,6 +61,24 @@ namespace Lobster.PageObjectModel.Dialogs
 			Browser.Wait();
 
 			CloseButton.Click();
+		}
+
+		public void WaitClose()
+		{
+			var start = 0;
+			const int finish = 5;
+
+			while (Root.Displayed)
+			{
+				Thread.Sleep(1000);
+
+				start++;
+
+				if (start == finish)
+				{
+					throw new Exception("Timed out");
+				}
+			}
 		}
 	}
 }

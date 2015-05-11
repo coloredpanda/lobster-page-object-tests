@@ -3,7 +3,7 @@ using OpenQA.Selenium.Support.PageObjects;
 
 namespace Lobster.PageObjectModel.Dialogs
 {
-	class ResendPasswordDialog
+	class ResendPasswordDialog : Dialog
 	{
 		[FindsBy(How = How.XPath, Using = "/html/body/div[4]")]
 		public IWebElement Root { get; set; }

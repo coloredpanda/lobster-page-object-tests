@@ -3,7 +3,7 @@ using OpenQA.Selenium.Support.PageObjects;
 
 namespace Lobster.PageObjectModel.Dialogs
 {
-	public class SignUpDialog
+	public class SignUpDialog : Dialog
 	{
 		[FindsBy(How = How.XPath, Using = "/html/body/div[7]")]
 		public IWebElement Root { get; set; }
